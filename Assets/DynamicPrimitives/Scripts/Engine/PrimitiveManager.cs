@@ -31,7 +31,7 @@ public class PrimitiveManager : MonoBehaviour
         for (int i = 0; i != positions.Length; ++i)
         {
             var eachPos = positions[i];
-            var newObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            var newObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
             newObject.name = string.Format(_curObjectName, i);
 
             var newObjectTransform = newObject.GetComponent<Transform>();
@@ -49,7 +49,7 @@ public class PrimitiveManager : MonoBehaviour
     {
         var localScale = Vector3.one * _curPointRadius;
 
-        var newObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        var newObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
         newObject.name = _curObjectName;
 
         var newObjectTransform = newObject.GetComponent<Transform>();
