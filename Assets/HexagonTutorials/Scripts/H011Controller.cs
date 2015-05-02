@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class H011Manager : MonoBehaviour
+public class H011Controller : MonoBehaviour
 {
     void Start()
     {
