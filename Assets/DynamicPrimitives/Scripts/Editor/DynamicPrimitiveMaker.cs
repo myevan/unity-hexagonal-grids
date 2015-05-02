@@ -12,56 +12,39 @@ public static class DynamicPrimitiveMaker
         var newMeshFitler = newObject.AddComponent<MeshFilter>();
         newMeshFitler.mesh = GetSharedQuadMesh();
         
-        newObject.AddComponent<MeshRenderer>();
+        var newMeshRenderer = newObject.AddComponent<MeshRenderer>();
+        newMeshRenderer.sharedMaterials = GetSharedMaterials();
+        newMeshRenderer.receiveShadows = false;
+        newMeshRenderer.useLightProbes = false;
+        newMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
     }
 
     public static Mesh GetSharedQuadMesh()
     {
         if (_sharedMesh == null)
         {
-            _sharedMesh = CreateQuadMesh("DynamicSharedQuadMesh");
+            _sharedMesh = DynamicPrimitiveFactory.CreateQuadMesh("DynamicSharedQuadMesh");
         }
 
         return _sharedMesh;
     }
 
-    public static Mesh CreateQuadMesh(string name)
+    public static Material[] GetSharedMaterials()
     {
-        var positions = new Vector3[4];
-        positions[0] = new Vector3(-0.5f, -0.5f, 0f);
-        positions[1] = new Vector3(+0.5f, -0.5f, 0f);
-        positions[2] = new Vector3(-0.5f, +0.5f, 0f);
-        positions[3] = new Vector3(+0.5f, +0.5f, 0f);
-        
-        var texCoords = new Vector2[4];
-        texCoords[0] = new Vector2(0f, 0f);
-        texCoords[1] = new Vector2(0f, 1f);
-        texCoords[2] = new Vector2(1f, 0f);
-        texCoords[3] = new Vector2(1f, 1f);
-        
-        var indices = new int[6];
-        indices[0] = 0;
-        indices[1] = 2;
-        indices[2] = 1;
+        if (_sharedMaterials == null) 
+        {
+            Debug.Log("create_dynamic_shared_materials");
 
-        indices[3] = 1;
-        indices[4] = 2;
-        indices[5] = 3;
-
-        var normals = new Vector3[4];
-
-        for( int i = 0 ; i < 4 ; i++ ) {
-            normals[i] = new Vector3( 0f, 0f, 1f);
+            var defaultShader = Shader.Find("Unlit/Color");
+            var defaultMaterial = new Material(defaultShader);
+            defaultMaterial.name = "DynamicSharedMaterial";
+            _sharedMaterials = new Material[] {
+                defaultMaterial,
+            };
         }
-
-        var newMesh = new Mesh();
-        newMesh.name = name;
-        newMesh.vertices = positions;
-        newMesh.triangles = indices;
-        newMesh.normals = normals;
-        newMesh.uv = texCoords;
-        return newMesh;
+        return _sharedMaterials;
     }
 
     private static Mesh _sharedMesh;
+    private static Material[] _sharedMaterials;
 }
