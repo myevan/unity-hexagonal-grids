@@ -19,6 +19,11 @@ public class PrimitiveManager : MonoBehaviour
         _curMaterial.color = color;
     }
 
+    public void SetLineWidth(float width)
+    {
+        _curLineWidth = width;
+    }
+
     public void MakePoints(Vector3[] positions)
     {
         var localScale = Vector3.one * _curPointRadius;
@@ -76,6 +81,67 @@ public class PrimitiveManager : MonoBehaviour
         newLineRenderer.sortingOrder = AllocSortingOrder();
     }
 
+    public void MakeClosedLines(Vector3[] positions)
+    {
+        var newObject = new GameObject();
+        newObject.name = _curObjectName; 
+
+        var newObjectTransform = newObject.GetComponent<Transform>();
+        newObjectTransform.parent = _cachedTransform; 
+        newObjectTransform.localPosition = Vector3.zero;
+        newObjectTransform.localScale = Vector3.one;
+
+        var newLineRenderer = newObject.AddComponent<LineRenderer>();
+        newLineRenderer.SetWidth(_curLineWidth, _curLineWidth);
+        newLineRenderer.SetVertexCount(positions.Length + 1);
+        for (int i = 0; i != positions.Length; ++i)
+            newLineRenderer.SetPosition(i, positions[i]);
+        newLineRenderer.SetPosition(positions.Length, positions[0]);
+
+        newLineRenderer.sharedMaterial = _curMaterial;
+        newLineRenderer.sortingOrder = AllocSortingOrder();
+    }
+
+    public void MakeHexagon(Vector3[] positions)
+    {
+        if (_hexagonMesh == null)
+        {
+            int[] indices = new int[18]
+            {
+                0, 1, 2,
+                0, 2, 3,
+                0, 3, 4,
+                0, 4, 5,
+                0, 5, 6,
+                0, 6, 1,
+            };
+
+            var newMesh = new Mesh();
+            newMesh.name = "DynamicHexagonMesh";
+            newMesh.vertices = positions;
+            newMesh.triangles = indices;
+            _hexagonMesh = newMesh;
+        }
+
+        var newObject = new GameObject();
+        newObject.name = _curObjectName;
+
+        var newObjectTransform = newObject.GetComponent<Transform>();
+        newObjectTransform.parent = _cachedTransform; 
+        newObjectTransform.localPosition = Vector3.zero;
+        newObjectTransform.localScale = Vector3.one; 
+
+        var newMeshFitler = newObject.AddComponent<MeshFilter>();
+        newMeshFitler.mesh = _hexagonMesh;
+        
+        var newMeshRenderer = newObject.AddComponent<MeshRenderer>();
+        newMeshRenderer.sharedMaterial = _curMaterial;
+        newMeshRenderer.receiveShadows = false;
+        newMeshRenderer.useLightProbes = false;
+        newMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;        
+        newMeshRenderer.sortingOrder = AllocSortingOrder();
+    }
+
     private int AllocSortingOrder()
     {
         return _curSortingOrder++;
@@ -88,4 +154,6 @@ public class PrimitiveManager : MonoBehaviour
     private float _curLineWidth = 0.1f;
     private float _curPointRadius = 0.1f;
     private string _curObjectName = "";
+
+    private static Mesh _hexagonMesh;
 }

@@ -61,6 +61,17 @@ public class HexagonConfig
         return cornerPositions;
     }
 
+    public Vector3[] GetVertexPositions(Vector3 center)
+    {
+        var vertexPositions = new Vector3[_vertexCount + 1];
+        vertexPositions[0] = center;
+        for (int vertexIndex = 1; vertexIndex != _vertexCount; ++vertexIndex)
+        {
+            vertexPositions[vertexIndex] = GetCornerPosition(vertexIndex, center);
+        }
+        return vertexPositions;
+    }
+
     private Orientation _curOrientation = Orientation.PointyTopped;
 
     private float _edgeLen = 1;
@@ -68,4 +79,5 @@ public class HexagonConfig
 
     private const float _wedgeAngleDeg = 60;
     private const int _cornerCount = 6;
+    private const int _vertexCount = 6 + 1;
 }

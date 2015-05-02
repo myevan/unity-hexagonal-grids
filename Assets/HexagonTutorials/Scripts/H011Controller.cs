@@ -5,14 +5,23 @@ public class H011Controller : MonoBehaviour
     void Start()
     {
         var hexagonConfig = new HexagonConfig();
+        var vertexPositions = hexagonConfig.GetVertexPositions(Vector3.zero);
         var cornerPositions = hexagonConfig.GetCornerPositions(Vector3.zero);
 
         var primitiveManager = gameObject.AddComponent<PrimitiveManager>();
+        primitiveManager.SetColor(new Color(0.5f, 0.5f, 0.5f));
+        primitiveManager.SetObjectName("hexagon");
+        primitiveManager.MakeHexagon(vertexPositions);
+
         primitiveManager.SetColor(new Color(0.3f, 0.3f, 0.3f));
-        primitiveManager.SetObjectName("edge");
-        primitiveManager.MakeLine(cornerPositions[0], cornerPositions[1]);
+        primitiveManager.SetObjectName("outline");
+        primitiveManager.SetLineWidth(0.05f);
+        primitiveManager.MakeClosedLines(cornerPositions);
 
         primitiveManager.SetColor(new Color(0.5f, 0.1f, 0.1f));
+        primitiveManager.SetObjectName("edge");
+        primitiveManager.MakeLine(cornerPositions[4], cornerPositions[5]);
+
         primitiveManager.SetObjectName("center");
         primitiveManager.MakePoint(Vector3.zero);
         primitiveManager.SetObjectName("corner[{0}]");
