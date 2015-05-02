@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public static class DynamicPrimitiveMaker
+public static class DynamicPrimitiveMenus
 {
     [MenuItem("GameObject/3D Object/Dynamic Quad")]
     public static void CreateDynamicQuad()
