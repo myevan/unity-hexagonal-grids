@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HexConfig
+public class HexagonConfig
 {
     public enum Orientation
     {
