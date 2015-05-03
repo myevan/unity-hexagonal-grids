@@ -1,24 +1,34 @@
 using UnityEngine;
 
+public enum HexagonOrientation
+{
+    PointyTopped,
+    FlatTopped,
+}
+
 public class HexagonConfig
 {
-    public enum Orientation
-    {
-        PointyTopped,
-        FlatTopped,
-    }
-
-    public Orientation CurrentOrientation
+    public HexagonOrientation CurrentOrientation
     {
         get
         {
-            return _curOrientation;
+            return _orientation;
         }
     }
 
     public void SetEdgeLen(float edgeLen)
     {
         _edgeLen = edgeLen;
+    }
+
+    public void SetOrientation(HexagonOrientation orientation)
+    {
+        _orientation = orientation;
+        
+        if (orientation == HexagonOrientation.PointyTopped)
+            _baseAngleDeg = 30;
+        else
+            _baseAngleDeg = 0;
     }
 
     public float GetCornerAngleDeg(int cornerIndex)
@@ -72,7 +82,7 @@ public class HexagonConfig
         return vertexPositions;
     }
 
-    private Orientation _curOrientation = Orientation.PointyTopped;
+    private HexagonOrientation _orientation = HexagonOrientation.PointyTopped;
 
     private float _edgeLen = 1;
     private float _baseAngleDeg = 30;

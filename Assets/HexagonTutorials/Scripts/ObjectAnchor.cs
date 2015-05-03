@@ -4,20 +4,14 @@ public class ObjectAnchor : MonoBehaviour
 {
     public RectTransform canvasTransform;
 
-    public void SetTargetTransform(Transform targetTransform)
-    {
-        _targetTransform = targetTransform;
-    }
-
     private void Awake()
     {
         _cachedRectTransform = GetComponent<RectTransform>();
     }
 
-    private void Update()
+    public void SetTargetTransform(Transform targetTransform)
     {
-        if (_targetTransform == null)
-            return;
+        _targetTransform = targetTransform;
 
         var screenPoint = RectTransformUtility.WorldToScreenPoint(
             Camera.main, _targetTransform.position);

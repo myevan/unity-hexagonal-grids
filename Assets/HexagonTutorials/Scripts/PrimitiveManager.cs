@@ -8,6 +8,23 @@ public class PrimitiveManager : MonoBehaviour
         _curShader = Shader.Find("UI/Default");
     }
 
+    public void Clear()
+    {
+        if (_hexagonMesh != null)
+        {
+            Destroy(_hexagonMesh);
+            _hexagonMesh = null;
+        }
+
+        _curSortingOrder = 0;
+
+        foreach (Transform childTransform in _cachedTransform)
+        {
+            childTransform.gameObject.name = "";
+            Destroy(childTransform.gameObject);
+        }
+    }
+
     public void SetObjectName(string objName)
     {
         _curObjectName = objName;

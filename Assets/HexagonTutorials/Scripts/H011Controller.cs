@@ -8,38 +8,74 @@ public class H011Controller : MonoBehaviour
 
     void Start()
     {
-        var hexagonConfig = new HexagonConfig();
-        var vertexPositions = hexagonConfig.GetVertexPositions(Vector3.zero);
-        var cornerPositions = hexagonConfig.GetCornerPositions(Vector3.zero);
+        _hexagonConfig = new HexagonConfig();
+        _primitiveManager = gameObject.AddComponent<PrimitiveManager>();
+        _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped);
 
-        var primitiveManager = gameObject.AddComponent<PrimitiveManager>();
-        primitiveManager.SetColor(new Color(0.5f, 0.5f, 0.5f));
-        primitiveManager.SetObjectName("hexagon");
-        primitiveManager.MakeHexagon(vertexPositions);
+        MakeView();
+    }
 
-        primitiveManager.SetColor(new Color(0.3f, 0.3f, 0.3f));
-        primitiveManager.SetObjectName("outline");
-        primitiveManager.SetLineWidth(0.05f);
-        primitiveManager.MakeClosedLines(cornerPositions);
+    void MakeView()
+    {
+        var vertexPositions = _hexagonConfig.GetVertexPositions(Vector3.zero);
+        var cornerPositions = _hexagonConfig.GetCornerPositions(Vector3.zero);
 
-        primitiveManager.SetColor(new Color(0.5f, 0.1f, 0.1f));
-        primitiveManager.SetObjectName("edge");
-        primitiveManager.MakeLine(cornerPositions[4], cornerPositions[5]);
+        _primitiveManager.Clear();
 
-        primitiveManager.SetObjectName("edge_center");
-        primitiveManager.MakePoint((cornerPositions[4] + cornerPositions[5]) / 2 );
-        primitiveManager.SetObjectName("center");
-        primitiveManager.MakePoint(Vector3.zero);
-        primitiveManager.SetObjectName("corner[{0}]");
-        primitiveManager.MakePoints(cornerPositions);
+        _primitiveManager.SetColor(new Color(0.5f, 0.5f, 0.5f));
+        _primitiveManager.SetObjectName("hexagon");
+        _primitiveManager.MakeHexagon(vertexPositions);
+
+        _primitiveManager.SetColor(new Color(0.3f, 0.3f, 0.3f));
+        _primitiveManager.SetObjectName("outline");
+        _primitiveManager.SetLineWidth(0.05f);
+        _primitiveManager.MakeClosedLines(cornerPositions);
+
+        _primitiveManager.SetColor(new Color(0.5f, 0.1f, 0.1f));
+        _primitiveManager.SetObjectName("edge");
+        _primitiveManager.MakeLine(cornerPositions[4], cornerPositions[5]);
+
+        _primitiveManager.SetObjectName("edge_center");
+        _primitiveManager.MakePoint((cornerPositions[4] + cornerPositions[5]) / 2 );
+        _primitiveManager.SetObjectName("center");
+        _primitiveManager.MakePoint(Vector3.zero);
+        _primitiveManager.SetObjectName("corner[{0}]");
+        _primitiveManager.MakePoints(cornerPositions);
 
         centerAnchor.SetTargetTransform(
-            primitiveManager.CachedTransform.Find("center"));
+            _primitiveManager.CachedTransform.Find("center"));
 
         cornerAnchor.SetTargetTransform(
-            primitiveManager.CachedTransform.Find("corner[0]"));
+            _primitiveManager.CachedTransform.Find("corner[0]"));
 
         edgeAnchor.SetTargetTransform(
-            primitiveManager.CachedTransform.Find("edge_center"));
+            _primitiveManager.CachedTransform.Find("edge_center"));
     }
+
+    public void OnClickPointyTopped(bool isOn)
+    {
+        if (!isOn)
+            return;
+            
+        Debug.Log("pointy topped");
+
+        _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped);
+
+        MakeView();
+    }
+
+    public void OnClickFlatTopped(bool isOn)
+    {
+        if (!isOn)
+            return;
+
+        Debug.Log("flat topped");
+
+        _hexagonConfig.SetOrientation(HexagonOrientation.FlatTopped);
+
+        MakeView();
+    }
+
+    private HexagonConfig _hexagonConfig;
+    private PrimitiveManager _primitiveManager;
 }
