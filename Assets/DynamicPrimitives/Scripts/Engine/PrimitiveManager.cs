@@ -78,6 +78,8 @@ public class PrimitiveManager : MonoBehaviour
         newLineRenderer.SetPosition(0, sPosition);
         newLineRenderer.SetPosition(1, ePosition);
         newLineRenderer.sharedMaterial = _curMaterial;
+        newLineRenderer.useWorldSpace = false;
+
         newLineRenderer.sortingOrder = AllocSortingOrder();
     }
 
@@ -97,8 +99,9 @@ public class PrimitiveManager : MonoBehaviour
         for (int i = 0; i != positions.Length; ++i)
             newLineRenderer.SetPosition(i, positions[i]);
         newLineRenderer.SetPosition(positions.Length, positions[0]);
-
         newLineRenderer.sharedMaterial = _curMaterial;
+        newLineRenderer.useWorldSpace = false;
+
         newLineRenderer.sortingOrder = AllocSortingOrder();
     }
 
@@ -145,6 +148,14 @@ public class PrimitiveManager : MonoBehaviour
     private int AllocSortingOrder()
     {
         return _curSortingOrder++;
+    }
+
+    public Transform CachedTransform
+    {
+        get
+        {
+            return _cachedTransform;
+        }
     }
 
     private Transform _cachedTransform;
