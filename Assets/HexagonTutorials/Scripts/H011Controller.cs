@@ -2,6 +2,10 @@
 
 public class H011Controller : MonoBehaviour
 {
+    public ObjectAnchor centerAnchor;
+    public ObjectAnchor cornerAnchor;
+    public ObjectAnchor edgeAnchor;
+
     void Start()
     {
         var hexagonConfig = new HexagonConfig();
@@ -22,10 +26,20 @@ public class H011Controller : MonoBehaviour
         primitiveManager.SetObjectName("edge");
         primitiveManager.MakeLine(cornerPositions[4], cornerPositions[5]);
 
+        primitiveManager.SetObjectName("edge_center");
+        primitiveManager.MakePoint((cornerPositions[4] + cornerPositions[5]) / 2 );
         primitiveManager.SetObjectName("center");
         primitiveManager.MakePoint(Vector3.zero);
         primitiveManager.SetObjectName("corner[{0}]");
         primitiveManager.MakePoints(cornerPositions);
 
+        centerAnchor.SetTargetTransform(
+            primitiveManager.CachedTransform.Find("center"));
+
+        cornerAnchor.SetTargetTransform(
+            primitiveManager.CachedTransform.Find("corner[0]"));
+
+        edgeAnchor.SetTargetTransform(
+            primitiveManager.CachedTransform.Find("edge_center"));
     }
 }
