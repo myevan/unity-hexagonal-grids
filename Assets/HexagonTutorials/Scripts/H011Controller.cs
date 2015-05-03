@@ -6,12 +6,15 @@ public class H011Controller : MonoBehaviour
     public ObjectAnchor cornerAnchor;
     public ObjectAnchor edgeAnchor;
 
-    void Start()
+    void Awake()
     {
         _hexagonConfig = new HexagonConfig();
-        _primitiveManager = gameObject.AddComponent<PrimitiveManager>();
         _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped);
+        _primitiveManager = gameObject.AddComponent<PrimitiveManager>();
+    }
 
+    void Start()
+    {
         MakeView();
     }
 
@@ -56,7 +59,7 @@ public class H011Controller : MonoBehaviour
     {
         if (!isOn)
             return;
-            
+
         Debug.Log("pointy topped");
 
         _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped);
