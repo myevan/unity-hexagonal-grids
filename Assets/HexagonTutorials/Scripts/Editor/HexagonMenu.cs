@@ -4,13 +4,13 @@ using System.IO;
 
 public class HexagonMenu : MonoBehaviour
 {
-    [MenuItem("GameObject/3D Object/Pointy Topped Hexagon")]
+    [MenuItem("GameObject/3D Object/PHexagon")]
     public static void ExportPointyToppedHexagon()
     {
         ExportHexagon(PointyToppedHexagonConfig);
     }
 
-    [MenuItem("GameObject/3D Object/Flat Topped Hexagon")]
+    [MenuItem("GameObject/3D Object/FHexagon")]
     public static void ExportFlatToppedHexagon()
     {
         ExportHexagon(FlatToppedHexagonConfig);
