@@ -18,7 +18,7 @@ public class HexagonMenu : MonoBehaviour
 
     public static void ExportHexagon(HexagonConfig hexagonConfig)
     {
-        var hexagonName = hexagonConfig.Orientation.ToString() + "Hexagon";
+        var hexagonName = hexagonConfig.Orientation.ToString()[0] + "Hexagon";
 
         var newObject = new GameObject();
         newObject.name = hexagonName;

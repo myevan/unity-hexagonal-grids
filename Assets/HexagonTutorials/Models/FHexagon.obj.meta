@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: 4c5be594d81b640668b9feafa85ed285
-timeCreated: 1430756791
+guid: ee33953f55afc4dc4832bf1b09d694ec
+timeCreated: 1430757010
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: PointyToppedHexagon
+    100000: FHexagon
     100002: //RootNode
-    400000: PointyToppedHexagon
+    400000: FHexagon
     400002: //RootNode
-    2300000: PointyToppedHexagon
-    3300000: PointyToppedHexagon
-    4300000: PointyToppedHexagon
+    2300000: FHexagon
+    3300000: FHexagon
+    4300000: FHexagon
   materials:
     importMaterials: 1
     materialName: 0

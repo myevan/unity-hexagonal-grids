@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: ca843295d2a9c403bac469aea4d90a39
-timeCreated: 1430756784
+guid: dc6abbd1586f84f9a8907502c2fa7554
+timeCreated: 1430757000
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: FlatToppedHexagon
+    100000: PHexagon
     100002: //RootNode
-    400000: FlatToppedHexagon
+    400000: PHexagon
     400002: //RootNode
-    2300000: FlatToppedHexagon
-    3300000: FlatToppedHexagon
-    4300000: FlatToppedHexagon
+    2300000: PHexagon
+    3300000: PHexagon
+    4300000: PHexagon
   materials:
     importMaterials: 1
     materialName: 0
