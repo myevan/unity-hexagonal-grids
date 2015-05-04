@@ -10,12 +10,6 @@ public class PrimitiveManager : MonoBehaviour
 
     public void Clear()
     {
-        if (_hexagonMesh != null)
-        {
-            Destroy(_hexagonMesh);
-            _hexagonMesh = null;
-        }
-
         _curSortingOrder = 0;
 
         foreach (Transform childTransform in _cachedTransform)
@@ -124,24 +118,10 @@ public class PrimitiveManager : MonoBehaviour
 
     public void MakeHexagon(Vector3[] positions)
     {
-        if (_hexagonMesh == null)
-        {
-            int[] indices = new int[18]
-            {
-                0, 1, 2,
-                0, 2, 3,
-                0, 3, 4,
-                0, 4, 5,
-                0, 5, 6,
-                0, 6, 1,
-            };
-
-            var newMesh = new Mesh();
-            newMesh.name = "DynamicHexagonMesh";
-            newMesh.vertices = positions;
-            newMesh.triangles = indices;
-            _hexagonMesh = newMesh;
-        }
+        var newMesh = new Mesh();
+        newMesh.name = "DynamicHexagonMesh";
+        newMesh.vertices = positions;
+        newMesh.triangles = _hexagonIndices;
 
         var newObject = new GameObject();
         newObject.name = _curObjectName;
@@ -152,7 +132,7 @@ public class PrimitiveManager : MonoBehaviour
         newObjectTransform.localScale = Vector3.one; 
 
         var newMeshFitler = newObject.AddComponent<MeshFilter>();
-        newMeshFitler.mesh = _hexagonMesh;
+        newMeshFitler.mesh = newMesh;
         
         var newMeshRenderer = newObject.AddComponent<MeshRenderer>();
         newMeshRenderer.sharedMaterial = _curMaterial;
@@ -183,5 +163,13 @@ public class PrimitiveManager : MonoBehaviour
     private float _curPointRadius = 0.1f;
     private string _curObjectName = "";
 
-    private static Mesh _hexagonMesh;
+    private int[] _hexagonIndices = new int[18]
+    {
+        0, 1, 2,
+        0, 2, 3,
+        0, 3, 4,
+        0, 4, 5,
+        0, 5, 6,
+        0, 6, 1,
+    };
 }
