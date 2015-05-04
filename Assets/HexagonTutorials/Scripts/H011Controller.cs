@@ -8,8 +8,7 @@ public class H011Controller : MonoBehaviour
 
     void Awake()
     {
-        _hexagonConfig = new HexagonConfig();
-        _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped);
+        _hexagonConfig = new HexagonConfig(HexagonOrientation.PointyTopped);
         _primitiveManager = gameObject.AddComponent<PrimitiveManager>();
     }
 
@@ -27,7 +26,8 @@ public class H011Controller : MonoBehaviour
 
         _primitiveManager.SetColor(new Color(0.5f, 0.5f, 0.5f));
         _primitiveManager.SetObjectName("hexagon");
-        _primitiveManager.MakeHexagon(vertexPositions);
+        _primitiveManager.MakePolygon(
+            vertexPositions, HexagonConfig.FanIndices);
 
         _primitiveManager.SetColor(new Color(0.3f, 0.3f, 0.3f));
         _primitiveManager.SetObjectName("outline");

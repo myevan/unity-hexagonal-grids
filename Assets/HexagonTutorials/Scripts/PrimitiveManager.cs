@@ -116,12 +116,12 @@ public class PrimitiveManager : MonoBehaviour
         newLineRenderer.sortingOrder = AllocSortingOrder();
     }
 
-    public void MakeHexagon(Vector3[] positions)
+    public void MakePolygon(Vector3[] positions, int[] indices)
     {
         var newMesh = new Mesh();
-        newMesh.name = "DynamicHexagonMesh";
+        newMesh.name = "DynamicMesh";
         newMesh.vertices = positions;
-        newMesh.triangles = _hexagonIndices;
+        newMesh.triangles = indices;
 
         var newObject = new GameObject();
         newObject.name = _curObjectName;
@@ -163,13 +163,4 @@ public class PrimitiveManager : MonoBehaviour
     private float _curPointRadius = 0.1f;
     private string _curObjectName = "";
 
-    private int[] _hexagonIndices = new int[18]
-    {
-        0, 1, 2,
-        0, 2, 3,
-        0, 3, 4,
-        0, 4, 5,
-        0, 5, 6,
-        0, 6, 1,
-    };
 }
