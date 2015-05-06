@@ -90,6 +90,38 @@ public class PrimitiveManager : MonoBehaviour
         newLineRenderer.SetPosition(1, ePosition);
         newLineRenderer.sharedMaterial = _curMaterial;
         newLineRenderer.useWorldSpace = false;
+        newLineRenderer.receiveShadows = false;
+        newLineRenderer.useLightProbes = false;
+        newLineRenderer.shadowCastingMode = 
+            UnityEngine.Rendering.ShadowCastingMode.Off;
+
+        newLineRenderer.sortingOrder = AllocSortingOrder();
+    }
+
+    public void MakeLinkedLines(params Vector3[] positions)
+    {
+        var newObject = new GameObject();
+        newObject.name = _curObjectName; 
+
+        var newObjectTransform = newObject.GetComponent<Transform>();
+        newObjectTransform.parent = _cachedTransform; 
+        newObjectTransform.localPosition = Vector3.zero;
+        newObjectTransform.localScale = Vector3.one;
+
+        var newLineRenderer = newObject.AddComponent<LineRenderer>();
+        newLineRenderer.SetWidth(_curLineWidth, _curLineWidth);
+        newLineRenderer.SetVertexCount(positions.Length);
+        for (int i = 0; i != positions.Length; ++i)
+        {
+            newLineRenderer.SetPosition(i, positions[i]);
+        }
+
+        newLineRenderer.sharedMaterial = _curMaterial;
+        newLineRenderer.useWorldSpace = false;
+        newLineRenderer.receiveShadows = false;
+        newLineRenderer.useLightProbes = false;
+        newLineRenderer.shadowCastingMode = 
+            UnityEngine.Rendering.ShadowCastingMode.Off;
 
         newLineRenderer.sortingOrder = AllocSortingOrder();
     }
@@ -112,6 +144,10 @@ public class PrimitiveManager : MonoBehaviour
         newLineRenderer.SetPosition(positions.Length, positions[0]);
         newLineRenderer.sharedMaterial = _curMaterial;
         newLineRenderer.useWorldSpace = false;
+        newLineRenderer.receiveShadows = false;
+        newLineRenderer.useLightProbes = false;
+        newLineRenderer.shadowCastingMode = 
+            UnityEngine.Rendering.ShadowCastingMode.Off;
 
         newLineRenderer.sortingOrder = AllocSortingOrder();
     }
@@ -138,8 +174,21 @@ public class PrimitiveManager : MonoBehaviour
         newMeshRenderer.sharedMaterial = _curMaterial;
         newMeshRenderer.receiveShadows = false;
         newMeshRenderer.useLightProbes = false;
-        newMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;        
+        newMeshRenderer.shadowCastingMode = 
+            UnityEngine.Rendering.ShadowCastingMode.Off;
+
         newMeshRenderer.sortingOrder = AllocSortingOrder();
+    }
+
+    public void MakeClone(GameObject prefabObject, Vector3 pos)
+    {
+        var newObject = Instantiate(prefabObject);
+        newObject.name = _curObjectName;
+
+        var newObjectTransform = newObject.GetComponent<Transform>();
+        newObjectTransform.parent = _cachedTransform; 
+        newObjectTransform.localPosition = pos;
+        newObjectTransform.localScale = Vector3.one; 
     }
 
     private int AllocSortingOrder()

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class H013Controller : MonoBehaviour
+public class H021Controller : MonoBehaviour
 {
     public GameObject PHexagon;
     public GameObject FHexagon;
@@ -8,7 +8,8 @@ public class H013Controller : MonoBehaviour
     void Awake()
     {
         _hexagonObject = PHexagon;
-        _hexagonConfig = new HexagonConfig(HexagonOrientation.PointyTopped, 0);
+        _hexagonConfig = new HexagonConfig(HexagonOrientation.PointyTopped, 1);
+        _hexagonConfig.SetGrowY(-1f);
         _primitiveManager = gameObject.AddComponent<PrimitiveManager>();
     }
 
@@ -19,11 +20,11 @@ public class H013Controller : MonoBehaviour
 
     void MakeView()
     {
-        var originPos = new Vector3(-3, -1);
+        var originPos = new Vector3(-3, +2);
         var xAxisEndPos = originPos;
         var yAxisEndPos = originPos;
         xAxisEndPos.x += 6f;
-        yAxisEndPos.y += 3f;
+        yAxisEndPos.y -= 3f;
 
         _primitiveManager.Clear();
         _primitiveManager.SetColor(new Color(0.1f, 0.1f, 0.1f));
@@ -46,27 +47,53 @@ public class H013Controller : MonoBehaviour
         }
     }
 
-    public void OnClickPointyTopped(bool isOn)
+    public void OnClickOddR(bool isOn)
     {
         if (!isOn)
             return;
 
-        Debug.Log("pointy topped");
+        Debug.Log("odd-r");
 
-        _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped);
+        _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped, 1);
         _hexagonObject = PHexagon;
 
         MakeView();
     }
 
-    public void OnClickFlatTopped(bool isOn)
+    public void OnClickEvenR(bool isOn)
     {
         if (!isOn)
             return;
 
-        Debug.Log("flat topped");
+        Debug.Log("even-r");
 
-        _hexagonConfig.SetOrientation(HexagonOrientation.FlatTopped);
+        _hexagonConfig.SetOrientation(HexagonOrientation.PointyTopped, 2);
+        _hexagonObject = PHexagon;
+
+        MakeView();
+    }
+
+    public void OnClickOddQ(bool isOn)
+    {
+        if (!isOn)
+            return;
+
+        Debug.Log("odd-q");
+
+        _hexagonConfig.SetOrientation(HexagonOrientation.FlatTopped, 1);
+        _hexagonObject = FHexagon;
+
+        MakeView();
+    }
+
+    public void OnClickEvenQ(bool isOn)
+    {
+        if (!isOn)
+            return;
+
+        Debug.Log("even-q");
+
+        _hexagonConfig.SetOrientation(HexagonOrientation.FlatTopped, 2);
         _hexagonObject = FHexagon;
 
         MakeView();

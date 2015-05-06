@@ -5,33 +5,71 @@ using System.IO;
 public class HexagonMenu : MonoBehaviour
 {
     [MenuItem("GameObject/3D Object/PHexagon")]
-    public static void ExportPointyToppedHexagon()
+    public static void MakePHexagon()
     {
-        ExportHexagon(PointyToppedHexagonConfig);
+        MakeHexagon(PointyToppedHexagonConfig);
+    }
+
+    [MenuItem("GameObject/3D Object/PHexGrid")]
+    public static void MakePHexGrid()
+    {
+        MakeHexGrid(PointyToppedHexagonConfig, 0.01f);
     }
 
     [MenuItem("GameObject/3D Object/FHexagon")]
-    public static void ExportFlatToppedHexagon()
+    public static void MakeFHexagon()
     {
-        ExportHexagon(FlatToppedHexagonConfig);
+        MakeHexagon(FlatToppedHexagonConfig);
     }
 
-    public static void ExportHexagon(HexagonConfig hexagonConfig)
+    [MenuItem("GameObject/3D Object/FHexGrid")]
+    public static void MakeFHexGrid()
     {
-        var hexagonName = hexagonConfig.Orientation.ToString()[0] + "Hexagon";
+        MakeHexGrid(FlatToppedHexagonConfig, 0.01f);
+    }
 
+    public static void MakeHexagon(HexagonConfig hexagonConfig)
+    {
         var newObject = new GameObject();
-        newObject.name = hexagonName;
+        newObject.name = hexagonConfig.Prefix + "Hexagon";
 
         var newObjectTransform = newObject.GetComponent<Transform>();
         newObjectTransform.localPosition = Vector3.zero;
         newObjectTransform.localScale = Vector3.one;
 
         var newMeshFitler = newObject.AddComponent<MeshFilter>();
-        newMeshFitler.mesh = PrepareHexagonMesh(hexagonConfig, hexagonName);
+        newMeshFitler.mesh = PrepareHexagonMesh(hexagonConfig, newObject.name);
 
         var newMeshRenderer = newObject.AddComponent<MeshRenderer>();
         newMeshRenderer.sharedMaterial =
+            AssetDatabase.GetBuiltinExtraResource<Material>(
+                "Default-Material.mat");
+    }
+
+    public static void MakeHexGrid(HexagonConfig hexagonConfig, float lineWidth)
+    {
+        var newObject = new GameObject();
+        newObject.name = hexagonConfig.Prefix + "HexGrid";
+
+        var newObjectTransform = newObject.GetComponent<Transform>();
+        newObjectTransform.localPosition = Vector3.zero;
+        newObjectTransform.localScale = Vector3.one;
+
+        var newLineRenderer = newObject.AddComponent<LineRenderer>();
+        var positions = hexagonConfig.GetCornerPositions(Vector3.zero);
+        newLineRenderer.SetVertexCount(positions.Length + 1);
+        for (int i = 0; i != positions.Length; ++i)
+            newLineRenderer.SetPosition(i, positions[i]);
+        newLineRenderer.SetPosition(positions.Length, positions[0]);
+
+        newLineRenderer.SetWidth(lineWidth, lineWidth);
+        newLineRenderer.useWorldSpace = false;
+        newLineRenderer.receiveShadows = false;
+        newLineRenderer.useLightProbes = false;
+        newLineRenderer.shadowCastingMode = 
+            UnityEngine.Rendering.ShadowCastingMode.Off;
+
+        newLineRenderer.sharedMaterial = 
             AssetDatabase.GetBuiltinExtraResource<Material>(
                 "Default-Material.mat");
     }
@@ -41,7 +79,7 @@ public class HexagonMenu : MonoBehaviour
     {
         var meshPath = Path.Combine(HexagonModelDirPath, hexagonName + ".obj");
 
-        var oldMesh = AssetDatabase.LoadMainAssetAtPath(meshPath) as Mesh;
+        var oldMesh = AssetDatabase.LoadAssetAtPath(meshPath, typeof(Mesh)) as Mesh;
         if (oldMesh != null)
             return oldMesh;
 
@@ -59,7 +97,7 @@ public class HexagonMenu : MonoBehaviour
         ExportMesh(newMesh, meshPath);
         AssetDatabase.Refresh();
 
-        return newMesh;
+        return AssetDatabase.LoadAssetAtPath(meshPath, typeof(Mesh)) as Mesh;
     }
 
     public static void PrepareFolder(string folderPath)
